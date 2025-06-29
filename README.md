@@ -1,144 +1,87 @@
 # Online Shop Backend
 
-A minimalistic backend web app for an online shop with RESTful CRUD APIs for customers, shop item categories, shop items, and orders.
+## Description
 
-## Prerequisites
+This project is a minimalistic backend web application for an online shop. It provides full CRUD APIs for managing the following entities:
+- **Customer**
+- **ShopItemCategory**
+- **ShopItem**
+- **Order**
 
-- Node.js (v14.x or higher)
-- npm (v6.x or higher)
-- MongoDB (local installation or MongoDB Atlas account)
+The application uses SQLite for data persistence and includes endpoint autotests.
 
-## Installation
+## Setup
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone <repository-url>
-   cd online-shop-backend
+   cd Task\ 1
    ```
 
 2. Install dependencies:
-   ```
-   npm install
-   ```
-
-3. Set up environment variables:
-   - Create a `.env` file in the project root
-   - Add the following variables:
-     ```
-     PORT=3000
-     MONGODB_URI=mongodb://localhost:27017/online-shop
-     NODE_ENV=development
-     ```
-   - Adjust the `MONGODB_URI` as needed for your MongoDB setup
-
-## Running the Application
-
-1. Start the server:
-   ```
-   npm start
+   ```bash
+   pip install flask sqlalchemy requests
    ```
 
-2. For development with auto-reload:
+3. Initialize the database:
+   ```bash
+   python -c "from database import init_db; init_db()"
    ```
-   npm run dev
-   ```
 
-3. The server will start on the port specified in the `.env` file (default: 3000)
-   - API will be available at: `http://localhost:3000/api`
-   - Health check endpoint: `http://localhost:3000/health`
+## Run the Application
 
-## Seeding Data
-
-To populate the database with initial test data:
-
-```
-npm run seed
+Start the Flask server:
+```bash
+python app.py
 ```
 
-This will create sample customers, categories, shop items, and orders.
+The server will run at `http://127.0.0.1:5000`.
 
 ## API Endpoints
 
-### Customers
-- `GET /api/customers` - Get all customers
-- `GET /api/customers/:id` - Get a specific customer
-- `POST /api/customers` - Create a new customer
-- `PUT /api/customers/:id` - Update a customer
-- `DELETE /api/customers/:id` - Delete a customer
-
-### Shop Item Categories
-- `GET /api/categories` - Get all categories
-- `GET /api/categories/:id` - Get a specific category
-- `POST /api/categories` - Create a new category
-- `PUT /api/categories/:id` - Update a category
-- `DELETE /api/categories/:id` - Delete a category
-
-### Shop Items
-- `GET /api/items` - Get all shop items
-- `GET /api/items/:id` - Get a specific shop item
-- `POST /api/items` - Create a new shop item
-- `PUT /api/items/:id` - Update a shop item
-- `DELETE /api/items/:id` - Delete a shop item
-
-### Orders
-- `GET /api/orders` - Get all orders
-- `GET /api/orders/:id` - Get a specific order
-- `POST /api/orders` - Create a new order
-- `PUT /api/orders/:id` - Update an order
-- `DELETE /api/orders/:id` - Delete an order
-
-## Running Tests
-
-To run all tests:
-
-```
-npm test
-```
-
-This will run the full test suite using Jest, including all API endpoint tests.
-
-## Project Structure
-
-- `src/` - Source code
-  - `config/` - Configuration files for database, logging, etc.
-  - `controllers/` - Request handlers for each route
-  - `middleware/` - Express middleware (error handling, logging, etc.)
-  - `models/` - Mongoose data models
-  - `routes/` - API route definitions
-  - `utils/` - Utility functions and helpers
-  - `server.js` - Express application setup
-- `tests/` - Test files
-- `logs/` - Application logs
-
-## Data Models
-
 ### Customer
-- ID (automatically generated)
-- Name (string, required)
-- Surname (string, required)
-- Email (string, required, unique)
+- `GET /customers`: Retrieve all customers.
+- `POST /customers`: Create a new customer.
+- `GET /customers/<id>`: Retrieve a specific customer by ID.
+- `PUT /customers/<id>`: Update a specific customer by ID.
+- `DELETE /customers/<id>`: Delete a specific customer by ID.
 
 ### ShopItemCategory
-- ID (automatically generated)
-- Title (string, required)
-- Description (string, required)
+- `GET /shopitemcategories`: Retrieve all categories.
+- `POST /shopitemcategories`: Create a new category.
+- `GET /shopitemcategories/<id>`: Retrieve a specific category by ID.
+- `PUT /shopitemcategories/<id>`: Update a specific category by ID.
+- `DELETE /shopitemcategories/<id>`: Delete a specific category by ID.
 
 ### ShopItem
-- ID (automatically generated)
-- Title (string, required)
-- Description (string, required)
-- Price (float, required)
-- Categories (list of ShopItemCategory references)
-
-### OrderItem
-- ID (automatically generated)
-- ShopItem (reference to ShopItem)
-- Quantity (integer, required, min: 1)
+- `GET /shopitems`: Retrieve all shop items.
+- `POST /shopitems`: Create a new shop item.
+- `GET /shopitems/<id>`: Retrieve a specific shop item by ID.
+- `PUT /shopitems/<id>`: Update a specific shop item by ID.
+- `DELETE /shopitems/<id>`: Delete a specific shop item by ID.
 
 ### Order
-- ID (automatically generated)
-- Customer (reference to Customer)
-- Items (list of OrderItem objects)
-- TotalPrice (float, calculated)
-- Status (string: pending, processing, shipped, delivered)
-- Timestamps (createdAt, updatedAt)
+- `GET /orders`: Retrieve all orders.
+- `POST /orders`: Create a new order.
+- `GET /orders/<id>`: Retrieve a specific order by ID.
+- `PUT /orders/<id>`: Update a specific order by ID.
+- `DELETE /orders/<id>`: Delete a specific order by ID.
+
+## Run Tests
+
+Run the endpoint tests:
+```bash
+python tests.py
+```
+
+## Example Test Data
+
+The database is initialized with the following test data:
+- **Customer**: John Doe (`john.doe@example.com`)
+- **ShopItemCategory**: Electronics
+- **ShopItem**: Laptop (`$999.99`)
+
+## Notes
+
+- Ensure the Flask server is running before executing tests.
+- Modify the `BASE_URL` in `tests.py` if the server runs on a different host or port.
